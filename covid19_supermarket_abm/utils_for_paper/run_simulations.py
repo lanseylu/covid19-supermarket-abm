@@ -11,7 +11,7 @@ from covid19_supermarket_abm.simulator import simulate_several_days
 from covid19_supermarket_abm.utils.create_synthetic_baskets import get_all_shortest_path_dicts
 from covid19_supermarket_abm.utils.create_synthetic_store_network import create_small_store, create_medium_store, \
     create_large_store
-from covid19_supermarket_abm.utils_for_paper.load_graph import load_store_graph
+from load_graph import load_store_graph
 
 """
 Functions to run simulations and save results
@@ -144,3 +144,6 @@ def run_one_simulation_and_record_stats(config_name, num_iterations, config_dir=
     filename3 = os.path.join(results_folder, f'{config_name}_{num_iterations}_3.parquet')
     df_exposure_time_per_node_stats.to_parquet(filename3)
     print(f'Results saved in {filename1}, {filename2}, {filename3}.')
+
+
+run_one_simulation_and_record_stats('config', 1000)
