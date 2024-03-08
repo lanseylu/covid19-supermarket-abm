@@ -1,0 +1,9 @@
+{
+    "arrival_rate": 2.55,
+    "traversal_time": 0.2,
+    "num_hours_open": 14,
+    "infection_proportion": 0.0187,
+    "store_id": 1,
+    "path_generation": "synthetic"
+  }
+  

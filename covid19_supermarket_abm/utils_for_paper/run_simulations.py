@@ -12,6 +12,7 @@ from covid19_supermarket_abm.utils.create_synthetic_baskets import get_all_short
 from covid19_supermarket_abm.utils.create_synthetic_store_network import create_small_store, create_medium_store, \
     create_large_store
 from load_graph import load_store_graph
+from covid19_supermarket_abm.utils.load_example_data import load_example_store_graph, load_example_paths
 
 """
 Functions to run simulations and save results
@@ -67,7 +68,7 @@ def load_data_for_sim(store_id, graph_params, data_dir):
     return G, extra_outputs
 
 
-def run_several_simulations(config_name, num_iterations, multiplier_list, param='arrival_rate',
+def run_several_simulations(config_name, num_iterations, multiplier_list=[0.2], param='infection_proportion',
                             config_dir='.', data_dir='.', results_dir='.'):
     """Run several simulations where we vary over a specific parameter."""
 
@@ -117,16 +118,17 @@ def run_one_simulation_and_record_stats(config_name, num_iterations, config_dir=
     logging.info(f'Loaded config file: {config_filename}')
     store_id = config_original['store_id']
     # path_generation = config_original.get('path_generation', 'synthetic')
-    G, extra_outputs = load_data_for_sim(store_id, config_original, data_dir)
-    # path_generator_function, path_generator_args = get_path_generator(G, path_generation, zone_paths=extra_outputs,
-    #                                                                   synthetic_path_generator_args=extra_outputs)
+    # G, extra_outputs = load_data_for_sim(store_id, config_original, data_dir)
+    G = load_example_store_graph()
+    zone_paths = load_example_paths()
+    path_generator_function, path_generator_args = get_path_generator(G=G, zone_paths=zone_paths)
 
     # Do simulations
     df_cust, df_num_encounter_per_node_stats, df_exposure_time_per_node_stats = simulate_several_days(config,
                                                                                                       G,
-                                                                                                      extra_outputs,
-                                                                                                      # path_generator_function,
-                                                                                                      # path_generator_args,
+                                                                                                    #   extra_outputs,
+                                                                                                      path_generator_function,
+                                                                                                      path_generator_args,
                                                                                                       num_iterations=num_iterations)
 
     results_folder = os.path.join(results_dir, 'results')
